@@ -29,8 +29,6 @@ const CommentItem = ({
                         type='button'
                         className='btn btn-danger'
                         onClick={e => {
-                            console.log('postId:' + postId);
-                            console.log('commentId:' + _id);
                             deleteComment(postId, _id);
                         }}
                     >
