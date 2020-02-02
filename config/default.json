@@ -1,6 +1,0 @@
-{
-    "mongoURI": "mongodb+srv://mania123:mania123@devconnector-3zitt.gcp.mongodb.net/test?retryWrites=true&w=majority",
-    "jwtSecret": "mysecrettoken",
-    "githubClientId": "f4b8e3736ff930bf048f",
-    "githubSecret": "4b2b0f7b0823dfbef76abd5c0ae353f5d46d688f"
-}
