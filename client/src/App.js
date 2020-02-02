@@ -28,7 +28,7 @@ const App = () => {
                     <Navbar />
                     <Switch>
                         <Route exact path='/' component={Landing} />
-                        <Route path='*' component={Routes} />
+                        <Route component={Routes} />
                     </Switch>
                     {/*-- validate above code (return body=v01), with browser: http://localhost:3000 
                         /
