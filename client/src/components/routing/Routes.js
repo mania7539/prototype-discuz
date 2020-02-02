@@ -48,7 +48,7 @@ const Routes = props => {
                 />
                 <PrivateRoute exact path='/posts' component={Posts} />
                 <PrivateRoute exact path='/posts/:id' component={Post} />
-                <Route component={NotFound} />
+                <Route path='*' component={NotFound} />
             </Switch>
             {/*-- validate above code (return body=v02), with browser: http://localhost:3000 
                 /login
