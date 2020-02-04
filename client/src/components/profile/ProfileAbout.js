@@ -1,14 +1,18 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Spinner from '../layout/Spinner';
 
 const ProfileAbout = ({
     profile: {
         bio,
         skills,
-        user: { name }
+        user: { name },
+        loading
     }
 }) => {
-    return (
+    return !bio || !skills || !name || loading ? (
+        <Spinner />
+    ) : (
         <div class='profile-about bg-light p-2'>
             {bio && (
                 <Fragment>
