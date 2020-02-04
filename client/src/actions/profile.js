@@ -91,6 +91,31 @@ export const getGithubRepos = githubusername => async dispatch => {
     }
 };
 
+// Get Github repos and match for save it
+export const getGithubReposAndSave = (
+    userId,
+    githubusername
+) => async dispatch => {
+    try {
+        const res = await axios.get(
+            `/api/profile/github/${userId}/${githubusername}`
+        );
+
+        dispatch({
+            type: GET_REPOS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status
+            }
+        });
+    }
+};
+
 // Create or update profile
 export const createProfile = (
     formData,

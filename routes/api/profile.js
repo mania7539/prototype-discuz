@@ -386,4 +386,52 @@ router.get('/github/:username', async (req, res) => {
 });
 // validate above code (return body=v01), with Postman: use GET request
 
+// @route	GET api/profile/github/:user/:username
+// @desc	Get user repos from github, save avatar link to db.user
+// @access	Public
+router.get('/github/:user_id/:username', async (req, res) => {
+    try {
+        const options = {
+            uri: `https://api.github.com/users/${
+                req.params.username
+            }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+                'githubClientId'
+            )}&client_secret=${config.get('githubSecret')}`,
+
+            method: 'GET',
+            headers: { 'user-agent': 'node.js' }
+        };
+        console.error(req.params.username);
+        request(options, async (error, response, body) => {
+            if (error) console.error(error);
+
+            if (response.statusCode !== 200) {
+                return res.status(404).json({ msg: 'No Github profile found' });
+            }
+
+            try {
+                // console.error(JSON.parse(body)[0]['owner']['avatar_url']);
+                // console.error(req.params.user_id);
+                // console.error(req.params['user_id'][0]);
+
+                const user = await User.findById(req.params.user_id);
+                // console.error(user.avatar);
+
+                user.avatar = JSON.parse(body)[0]['owner']['avatar_url'];
+                await user.save();
+
+                res.json(JSON.parse(body));
+                // res.json should be the last line of code, or
+                //  ```req.params.user_id``` won't work correctly
+            } catch (err) {
+                console.error(err.message);
+                res.status(500).send('Server Error');
+            }
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;

@@ -2,9 +2,14 @@ import React, { Fragment, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile } from '../../actions/profile';
+import { createProfile, getGithubReposAndSave } from '../../actions/profile';
 
-const CreateProfile = ({ createProfile, history }) => {
+const CreateProfile = ({
+    createProfile,
+    getGithubReposAndSave,
+    history,
+    auth
+}) => {
     const [formData, setFormData] = useState({
         company: '',
         website: '',
@@ -44,7 +49,10 @@ const CreateProfile = ({ createProfile, history }) => {
 
     const onSubmit = e => {
         e.preventDefault();
+        // console.log('' + formData);
+        // console.error(auth.user._id);
         createProfile(formData, history);
+        getGithubReposAndSave(auth.user._id, githubusername);
     };
 
     return (
@@ -236,6 +244,17 @@ const CreateProfile = ({ createProfile, history }) => {
     );
 };
 
-CreateProfile.propTypes = { createProfile: PropTypes.func.isRequired };
+CreateProfile.propTypes = {
+    createProfile: PropTypes.func.isRequired,
+    getGithubReposAndSave: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+};
 
-export default connect(null, { createProfile })(withRouter(CreateProfile));
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, {
+    createProfile,
+    getGithubReposAndSave
+})(withRouter(CreateProfile));

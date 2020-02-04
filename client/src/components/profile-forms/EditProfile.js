@@ -2,12 +2,18 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile, getCurrentProfile } from '../../actions/profile';
+import {
+    createProfile,
+    getCurrentProfile,
+    getGithubReposAndSave
+} from '../../actions/profile';
 
 const EditProfile = ({
     profile: { profile, loading },
+    auth,
     createProfile,
     getCurrentProfile,
+    getGithubReposAndSave,
     history
 }) => {
     const [formData, setFormData] = useState({
@@ -72,9 +78,10 @@ const EditProfile = ({
 
     const onSubmit = e => {
         e.preventDefault();
-        console.log('' + formData);
-
+        // console.log('' + formData);
+        // console.error(auth.user._id);
         createProfile(formData, history, true);
+        getGithubReposAndSave(auth.user._id, githubusername);
     };
 
     return (
@@ -269,13 +276,18 @@ const EditProfile = ({
 EditProfile.propTypes = {
     createProfile: PropTypes.func.isRequired,
     getCurrentProfile: PropTypes.func.isRequired,
-    profile: PropTypes.object.isRequired
+    getGithubReposAndSave: PropTypes.func.isRequired,
+    profile: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    profile: state.profile
+    profile: state.profile,
+    auth: state.auth
 });
 
-export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
-    withRouter(EditProfile)
-);
+export default connect(mapStateToProps, {
+    createProfile,
+    getCurrentProfile,
+    getGithubReposAndSave
+})(withRouter(EditProfile));
