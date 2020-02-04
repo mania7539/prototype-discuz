@@ -10,7 +10,8 @@ const ProfileAbout = ({
         loading
     }
 }) => {
-    return !bio || !skills || !name || loading ? (
+    return !skills || !name || loading ? (
+        // only protect the required fields
         <Spinner />
     ) : (
         <div class='profile-about bg-light p-2'>
